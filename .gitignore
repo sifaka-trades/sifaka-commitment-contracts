@@ -1,0 +1,20 @@
+# Foundry build output
+out/
+cache/
+broadcast/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Secrets — NEVER commit these
+.env
+.env.local
+.env.*.local
+deployer.key
+operator.key
+*.pk
+
+# Local-only deployment artifacts (deploy receipts go in broadcast/ which is also gitignored)
+deployments/local/
