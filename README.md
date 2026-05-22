@@ -23,27 +23,29 @@ All 11 tests pass. Gas snapshots:
 - 10-hash batch: ~37k gas
 - At Polygon ~30 gwei × $0.6/MATIC: ~$0.0007 per batch
 
+## Deployments
+
+| Network | Contract address | Status |
+|---|---|---|
+| **Polygon mainnet** | `0xB5DE0135D743754031A82e0762609BbF7b8630e6` | **live since 2026-05-22** |
+| Polygon Amoy testnet | `0xed55C9A01c29B12eD490d5ffFaDdDDFE0eBb848C` | dev/soak only (2026-05-13→22) |
+
+Operator EOA (signs every commit, both networks): `0xB51292564A56098c067F6a4BC17c8a920977E6a4`
+
 ## Deploy
 
-Testnet (Polygon Amoy):
+Use the wrapper scripts — they prompt for the operator PK without
+leaking it to shell history:
+
 ```bash
-forge script script/Deploy.s.sol:Deploy \
-  --rpc-url $POLYGON_AMOY_RPC \
-  --private-key $DEPLOYER_PK \
-  --broadcast --verify \
-  --etherscan-api-key $POLYGONSCAN_API_KEY
+./script/deploy-amoy.sh      # Polygon Amoy testnet
+./script/deploy-mainnet.sh   # Polygon mainnet (asks for 'mainnet' confirmation)
 ```
 
-Mainnet (Polygon):
-```bash
-forge script script/Deploy.s.sol:Deploy \
-  --rpc-url $POLYGON_RPC \
-  --private-key $DEPLOYER_PK \
-  --broadcast --verify \
-  --etherscan-api-key $POLYGONSCAN_API_KEY
-```
-
-Required env vars: `DEPLOYER_PK` (one-time deploy gas, ~0.05 MATIC), `OPERATOR_ADDR` (the EOA that will sign all commits going forward — keep this key in 1Password).
+Required: operator EOA funded with POL on the target network (~5 POL
+covers deploy + thousands of commits). `deploy-mainnet.sh` defaults to
+the publicnode RPC; override with `RPC_URL=<your-alchemy-url>` for
+production reliability.
 
 ## Verifying a commitment off-chain
 
